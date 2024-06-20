@@ -14,15 +14,18 @@ async function getParticipants(): Promise<Participant[]> {
 }
 
 async function getParticipant(id: number): Promise<Participant> {
-  if (!id) return;
-  const response = await fetch(`${PARTICIPANT_URL}/${id}`).then((response) => response.json());
+  if (id) {
+    const response = await fetch(`${PARTICIPANT_URL}/${id}`).then((response) => response.json());
 
-  return response;
+    return response;
+  }
+  throw new Error("No id provided");
 }
 
 async function postParticipant(participant: Participant): Promise<Participant> {
-  const response = await fetch(PARTICIPANT_URL, {
-    method: "POST",
+  const URL = participant.id ? `${PARTICIPANT_URL}/${participant.id}` : PARTICIPANT_URL;
+  const response = await fetch(URL, {
+    method: participant.id ? "PUT" : "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -43,18 +46,16 @@ async function deleteParticipant(id: number) {
 async function getDisciplines() {
   const response = await fetch(DISCIPLINE_URL).then((response) => response.json());
   // console.log("DISCIPLINES", response);
-  
+
   return response;
 }
 
 async function getClubs() {
   // console.log("Fetching clubs");
-  
+
   const response = await fetch(`${PARTICIPANT_URL}/clubs`).then((response) => response.json());
 
-  
   return response;
-
 }
 
 export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs };

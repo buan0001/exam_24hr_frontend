@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { deleteParticipant, getParticipant, getParticipants } from "../services/FetchHandler";
-import { Discipline, Participant } from "../global_interfaces/participantInterface";
+import { deleteParticipant, getParticipant, getParticipants } from "../../services/FetchHandler";
+import { Discipline, Participant } from "../../global_interfaces/participantInterface";
 
 type FilterValues = {
   filterClub: string;
@@ -85,7 +85,7 @@ export default function ParticipantTable({
       return 0;
     });
     if (!sortDir) sorted.reverse();
-    console.log("filter values", filterValues);
+    // console.log("filter values", filterValues);
     const filtered = sorted.filter((participant) => {
       let bool = true;
       for (const key in filterValues) {

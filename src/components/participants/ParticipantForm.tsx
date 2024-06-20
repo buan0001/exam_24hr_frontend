@@ -1,14 +1,14 @@
-import {  useState } from "react";
-import { Discipline, Participant } from "../global_interfaces/participantInterface";
-import {  getParticipants, postParticipant } from "../services/FetchHandler";
-import { defaultParticipant } from "../global_interfaces/emptyInstancedInterfaces";
+import { useState } from "react";
+import { Discipline, Participant } from "../../global_interfaces/participantInterface";
+import { getParticipants, postParticipant } from "../../services/FetchHandler";
+import { defaultParticipant } from "../../global_interfaces/emptyInstancedInterfaces";
 
 export default function ParticipantForm({
   setParticipants,
   formParticipant,
   setFormParticipant,
   clubs,
-  disciplines
+  disciplines,
 }: {
   setParticipants: (participants: Participant[]) => void;
   formParticipant: Participant;
@@ -20,8 +20,8 @@ export default function ParticipantForm({
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    console.log("posting participant");
-    if (formParticipant.name === "" || formParticipant.birthDate === "" || formParticipant.club === "") return setErrorMessage("Please fill out all fields");
+    console.log("posting participant", formParticipant);
+    if (formParticipant.name === "" || formParticipant.birthDate === "" || formParticipant.club === "" || formParticipant.gender === "") return setErrorMessage("Please fill out all fields");
 
     const response = await postParticipant(formParticipant);
 
@@ -32,13 +32,16 @@ export default function ParticipantForm({
     setParticipants(await getParticipants());
   }
 
-  function handleparticipantInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleParticipantInputChange(event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
     const { name, value } = event.target;
+    console.log("name", name, "value", value);
+    
     setFormParticipant({ ...formParticipant, [name]: value });
+    
   }
 
   function disciplineChanged(e: React.ChangeEvent<HTMLSelectElement>) {
-    // console.log("target value", e.target.value);
+    console.log("target value", e.target.value);
     if (formParticipant.disciplines.find((discipline) => discipline.name === e.target.value)) {
       setFormParticipant({
         ...formParticipant,
@@ -53,7 +56,7 @@ export default function ParticipantForm({
 
   function generateDisciplineOptions() {
     // console.log("form part",formParticipant);
-    
+
     if (disciplines.length === 0) {
       return <option value={""}>No disciplines available</option>;
     }
@@ -64,13 +67,12 @@ export default function ParticipantForm({
     ));
   }
 
-  
   function generateClubOptions() {
     return clubs.map((club) => (
       <option key={club} value={club} selected={club.toLocaleLowerCase() == formParticipant.club.toLocaleLowerCase()}>
         {/* {capitalizeFirstLetter(club)}
          */}
-         {club}
+        {club}
       </option>
     ));
   }
@@ -94,11 +96,18 @@ export default function ParticipantForm({
           }}
         >
           <label>Name</label>
-          <input type="text" name="name" value={formParticipant.name} onChange={handleparticipantInputChange} />
+          <input type="text" name="name" value={formParticipant.name} onChange={handleParticipantInputChange} />
+          <label>Gender</label>
+          <select name="gender" id="" onChange={handleParticipantInputChange} value={formParticipant.gender}>
+            <option value=""></option>
+            <option value="MAN">Man</option>
+            <option value="WOMAN">Woman</option>
+            <option value="OTHER">Other</option>
+          </select>
           <label>Birthdate</label>
-          <input type="date" name="birthDate" value={formParticipant.birthDate} onChange={handleparticipantInputChange} />
+          <input type="date" name="birthDate" value={formParticipant.birthDate} onChange={handleParticipantInputChange} />
           <label>Club</label>
-          <select>
+          <select name="club" onChange={handleParticipantInputChange}>
             <option value="">Select a club</option>
             {generateClubOptions()}
           </select>

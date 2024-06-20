@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import ParticipantsTable from "./ParticipantTable";
-import { Discipline, Participant } from "../global_interfaces/participantInterface";
+import { Discipline, Participant } from "../../global_interfaces/participantInterface";
 import ParticipantDetails from "./ParticipantDetails";
 import ParticipantForm from "./ParticipantForm";
-import { defaultParticipant } from "../global_interfaces/emptyInstancedInterfaces";
-import { getClubs, getDisciplines } from "../services/FetchHandler";
+import { defaultParticipant } from "../../global_interfaces/emptyInstancedInterfaces";
+import { getClubs, getDisciplines, getParticipant } from "../../services/FetchHandler";
 
 export default function ParticipantPage() {
   const [selectedParticipant, setSelectedParticipant] = useState<Participant>(defaultParticipant);
@@ -14,14 +14,24 @@ export default function ParticipantPage() {
   const [disciplines, setDisciplines] = useState<Discipline[]>([]);
 
   useEffect(() => {
-    async function run ()  {
+    async function run() {
       console.log("Fetching participants");
-      
+
       setDisciplines(await getDisciplines());
       setClubs(await getClubs());
     }
     run();
   }, []);
+
+  useEffect(() => {
+    async function get() {
+      if (selectedParticipant.id && selectedParticipant.id > 0) {
+        const response = await getParticipant(selectedParticipant.id);
+        setSelectedParticipant(response);
+      }
+    }
+    get();
+  }, [participants]);
 
   // TODO: Implement CRUD functionality to trophies
   return (

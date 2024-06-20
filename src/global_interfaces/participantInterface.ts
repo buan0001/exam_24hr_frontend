@@ -19,7 +19,7 @@ export type Result = {
   date: string;
   result: string;
   resultType: string;
-  discipline: string;
+  discipline: Discipline;
 };
 
 export type Discipline = {

@@ -1,10 +1,10 @@
-import { DetailedParticipant, Participant } from "../global_interfaces/participantInterface";
-import { defaultParticipant } from "../global_interfaces/emptyInstancedInterfaces";
+import { DetailedParticipant, Participant } from "../../global_interfaces/participantInterface";
+import { defaultParticipant } from "../../global_interfaces/emptyInstancedInterfaces";
 
 export default function ParticipantDetails({ selectedParticipant, setSelectedParticipant }: { selectedParticipant: DetailedParticipant; setSelectedParticipant: (participant: Participant) => void }) {
   function generateResults() {
-    console.log("selected participant",selectedParticipant);
-    
+    console.log("selected participant", selectedParticipant);
+
     if (selectedParticipant.results.length === 0)
       return (
         <>
@@ -26,7 +26,7 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
               <tr key={result.id}>
                 <td>{result.date}</td>
                 <td>{result.result}</td>
-                <td>{result.discipline}</td>
+                <td>{result.discipline.name}</td>
               </tr>
             ))}
           </tbody>
@@ -46,9 +46,7 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
         <h2>Disciplines:</h2>
         <ul>
           {selectedParticipant.disciplines.map((discipline) => (
-            <li key={discipline.name}>
-              {discipline.name}
-            </li>
+            <li key={discipline.name}>{discipline.name}</li>
           ))}
         </ul>
         <h2>Results</h2>

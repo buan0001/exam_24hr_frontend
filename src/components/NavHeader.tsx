@@ -10,7 +10,7 @@ export default function NavHeader() {
           </NavLink>
         </div>
         <div>
-          <NavLink className={"link"}  to="/somethingElse">
+          <NavLink className={"link"}  to="/results">
             Other
           </NavLink>
         </div>
