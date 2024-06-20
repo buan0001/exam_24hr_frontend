@@ -60,4 +60,14 @@ export type ResultListItem = {
   result: string;
   resultValue: number;
   resultType: string;
+
+  [key: string]: any;
+};
+
+
+export type NewResult = {
+  id?: number;
+  date: string;
+  result: string;
+  discipline: Discipline
 };

@@ -1,4 +1,4 @@
-import { Participant, ResultListItem } from "../global_interfaces/participantInterface";
+import { NewResult, Participant, ResultListItem } from "../global_interfaces/participantInterface";
 
 const API_URL = "http://localhost:8080/";
 const PARTICIPANT_URL = API_URL + "participants";
@@ -62,7 +62,28 @@ async function getClubs() {
 async function getResults() : Promise<ResultListItem[]>  {
   const response = await fetch(RESULTS_URL).then((response) => response.json());
   return response;
-
 }
 
-export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults };
+async function submitResult(result) : Promise<ResultListItem> {
+  const URL = result.id ? `${RESULTS_URL}/${result.id}` : RESULTS_URL;
+  const response = await fetch(URL, {
+    method: result.id ? "PUT" : "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(result),
+  }).then((response) => response.json());
+
+  return response;
+}
+
+async function deleteResult(id: number) : Promise<boolean> {
+  const response = await fetch(`${RESULTS_URL}/${id}`, {
+    method: "DELETE",
+  });
+
+  if (response.status === 200) return true
+  else return false
+}
+
+export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults, deleteResult, submitResult };

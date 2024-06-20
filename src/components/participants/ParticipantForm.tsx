@@ -77,9 +77,6 @@ export default function ParticipantForm({
     ));
   }
 
-  // function capitalizeFirstLetter(string: string) {
-  //   return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
-  // }
   return (
     <>
       <h1>Participant Form</h1>
@@ -117,6 +114,7 @@ export default function ParticipantForm({
             {generateDisciplineOptions()}
           </select>
           <button type="submit">Submit</button>
+          <button type="reset" onClick={()=> setFormParticipant(defaultParticipant)}>Clear</button>
         </form>
         <div>
           <h3>Selected disciplines:</h3>

@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import ResultsForm from "./ResultsForm";
 import ResultsTable from "./ResultsTable";
 import {  getDisciplines, getResults } from "../../services/FetchHandler";
-import {  ResultListItem } from "../../global_interfaces/participantInterface";
+import {  NewResult, ResultListItem } from "../../global_interfaces/participantInterface";
 
 export default function ResultsPage() {
   const [results, setResults] = useState<ResultListItem[]>([]);
-  const [formResult, setFormResult] = useState();
+  const [formResult, setFormResult] = useState<NewResult>();
   const [disciplines, setDisciplines] = useState([]);
 
   useEffect(() => {
@@ -20,10 +20,13 @@ export default function ResultsPage() {
   }, []);
 
   return (
-    <div>
-      <ResultsForm formResult={formResult} setFormResult={setFormResult} disciplines={disciplines} />
-      {/* <ResultsTable ={results} /> */}
-      <ResultsTable results={results} disciplines={disciplines} />
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div>
+        <ResultsForm formResult={formResult} setFormResult={setFormResult} disciplines={disciplines} setResults={setResults} />
+      </div>
+      <div>
+        <ResultsTable results={results} disciplines={disciplines} setFormResult={setFormResult} setResults={setResults} />
+      </div>
     </div>
   );
 }

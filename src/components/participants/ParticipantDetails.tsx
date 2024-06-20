@@ -35,7 +35,7 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
     }
   }
 
-  if (selectedParticipant === defaultParticipant) return <h1>No participant selected</h1>;
+  if (selectedParticipant === defaultParticipant) return <h2>No participant selected</h2>;
   else {
     return (
       <>

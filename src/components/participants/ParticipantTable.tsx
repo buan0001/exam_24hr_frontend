@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { deleteParticipant, getParticipant, getParticipants } from "../../services/FetchHandler";
 import { Discipline, Participant } from "../../global_interfaces/participantInterface";
+import { capitalizeFirstLetter } from "../../helpers/helperFunctions";
 
 type FilterValues = {
   filterClub: string;
@@ -86,9 +87,6 @@ export default function ParticipantTable({
     const filtered = sorted.filter((participant) => {
       let bool = true;
       for (const key in filterValues) {
-        // console.log("key", key);
-        // console.log(participant[key]);
-        // console.log("participant", participant);
 
         if (filterValues[key] === "") continue;
         else if (key === "disciplines") {
@@ -157,9 +155,7 @@ export default function ParticipantTable({
     ));
   }
 
-  function capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
-  }
+
 
   // function generateDisciplines(participant: Participant) {
   //   // console.log("DISCIPLINES ARE:",participant);
@@ -248,7 +244,7 @@ export default function ParticipantTable({
               <tr key={participant.id}>
                 <td>{participant.name}</td>
                 <td>{participant.ageGroup}</td>
-                <td>{participant.gender}</td>
+                <td>{capitalizeFirstLetter(participant.gender)}</td>
                 <td>{participant.club}</td>
                 {/* <td>
                 <ul>{ generateDisciplines(participant)}</ul>
@@ -258,7 +254,8 @@ export default function ParticipantTable({
                   <button
                     style={{
                       backgroundColor: "blue",
-                      opacity: 0.7,
+                      fontWeight: "700",
+                      opacity: 0.5,
                     }}
                     onClick={() => getDetailsClicked(participant.id)}
                   >
@@ -271,8 +268,10 @@ export default function ParticipantTable({
                       handleUpdateClicked(participant);
                     }}
                     style={{
-                      backgroundColor: "green",
-                      opacity: 0.7,
+                      backgroundColor: "cyan",
+                      color: "black",
+                      fontWeight: "700",
+                      opacity: 0.4,
                     }}
                   >
                     Update
@@ -283,6 +282,7 @@ export default function ParticipantTable({
                     style={{
                       backgroundColor: "red",
                       opacity: 0.7,
+                      fontWeight: "700",
                     }}
                     onClick={() => {
                       handleDelete(participant.id);
