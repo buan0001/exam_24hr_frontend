@@ -26,10 +26,10 @@ export default function ResultsTable({
 }) {
   const [filter, setFilter] = useState<FilterObject>({ discipline: "100m hurdles", ageGroup: "", gender: "" });
 
-  console.log("Results", results);
+  // console.log("Results", results);
 
   function sortedAndFilteredResults() {
-    console.log("results",results);
+    // console.log("results",results);
     
     // if (!results) {return [<div>No results found</div>]}
     const filteredResults = results.filter((result) => {
@@ -42,16 +42,16 @@ export default function ResultsTable({
     const sortedResults = filteredResults.sort((a, b) => {
       return a.resultValue - b.resultValue;
     });
-    console.log("filtered and sorted results", sortedResults);
+    // console.log("filtered and sorted results", sortedResults);
 
     return sortedResults;
   }
 
   function handleFilterChanged(e: React.ChangeEvent<HTMLSelectElement>) {
     const { name, value } = e.target;
-    console.log("name", name, "value", value);
+    // console.log("name", name, "value", value);
     setFilter({ ...filter, [name]: value });
-    console.log("filter", filter);
+    // console.log("filter", filter);
     sortedAndFilteredResults();
   }
 

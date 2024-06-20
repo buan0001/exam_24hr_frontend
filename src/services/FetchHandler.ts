@@ -1,4 +1,4 @@
-import { NewResult, Participant, ResultListItem } from "../global_interfaces/participantInterface";
+import { Discipline, NewResult, Participant, ResultListItem } from "../global_interfaces/participantInterface";
 
 const API_URL = "http://localhost:8080/";
 const PARTICIPANT_URL = API_URL + "participants";
@@ -51,6 +51,20 @@ async function getDisciplines() {
   return response;
 }
 
+async function submitDiscipline(discipline: Discipline) {
+  const URL = discipline.id ? `${DISCIPLINE_URL}/${discipline.id}` : DISCIPLINE_URL;
+
+  const response = await fetch(URL, {
+    method: discipline.id ? "PUT" : "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(discipline),
+  }).then((response) => response.json());
+
+  return response;
+}
+
 async function getClubs() {
   // console.log("Fetching clubs");
 
@@ -99,4 +113,4 @@ async function deleteResult(id: number) : Promise<boolean> {
   else return false
 }
 
-export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults, deleteResult, postResults , updateResult };
+export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults, deleteResult, postResults, updateResult, submitDiscipline };

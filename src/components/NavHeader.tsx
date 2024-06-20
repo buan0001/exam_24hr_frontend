@@ -15,8 +15,8 @@ export default function NavHeader() {
           </NavLink>
         </div>
         <div>
-          <NavLink className={"link"}  to="/also">
-            Other 2
+          <NavLink className={"link"}  to="/disciplines">
+            Disciplines
           </NavLink>
         </div>
       </nav>

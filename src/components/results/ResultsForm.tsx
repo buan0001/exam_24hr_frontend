@@ -80,18 +80,18 @@ export default function ResultsForm({
   }
 
   function handleFormInputChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
-    console.log("e.target.name", e.target.name);
-    console.log("e.target.value", e.target.value);
+    // console.log("e.target.name", e.target.name);
+    // console.log("e.target.value", e.target.value);
 
     const { name, value } = e.target;
     if (name == "discipline") {
       const s = value.split("-");
-      console.log("split", s);
+      // console.log("split", s);
 
       setFormResult({ ...formResult, discipline: { name: s[0], resultType: s[1] } });
     } else if (name == "participant") {
       const p = participants.find((p) => p.id == Number(value));
-      console.log("participant", p);
+      // console.log("participant", p);
       if (p) {
         setFormResult({ ...formResult, participant: p });
       }
@@ -102,7 +102,7 @@ export default function ResultsForm({
 
   function generateResultInput() {
     const ret = formResult.discipline.resultType;
-    console.log(ret);
+    // console.log(ret);
 
     return (
       <label>

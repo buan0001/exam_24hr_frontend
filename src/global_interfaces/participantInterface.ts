@@ -24,7 +24,7 @@ export type Result = {
 };
 
 export type Discipline = {
-  
+  id?: number;
   name: string;
   resultType?: string;
 };

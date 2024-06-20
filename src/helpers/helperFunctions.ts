@@ -1,6 +1,7 @@
 import { NewResult } from "../global_interfaces/participantInterface";
 
-export function capitalizeFirstLetter(string: string) {
+export function capitalizeFirstLetter(string: string |undefined) {
+  if (!string) return "";
   return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
 }
 
@@ -15,7 +16,7 @@ export function cleanResult(result: NewResult): number | false {
     if (s.length !== 2) {
       return false;
     }
-    console.log("s", s);
+    // console.log("s", s);
     
     const whole = s[0];
     let decimal = s[1];
@@ -31,13 +32,20 @@ export function cleanResult(result: NewResult): number | false {
     //   return false
     // }
     if (s.length == 3) {
-      s[0] = s[0].slice(0, 2);
-      s[1] = s[1].slice(0, 2);
-      s[2] = s[2].slice(0, 3);
-      const [minutes, seconds, milliseconds] = s;
+      const minutes =  s[0].slice(0, 2);
+      const seconds = s[1].slice(0, 2);
+      let milliseconds= s[2].slice(0, 3);
+      // const [minutes, seconds, milliseconds] = s;
       if (Number(seconds) > 59 || Number(milliseconds) > 999) {
         return false;
       }
+      console.log("miliseconds length", milliseconds.length);
+      
+      if (milliseconds.length < 3) {
+        milliseconds = milliseconds.padEnd(3, "0");
+      }
+      console.log("new miliseconds", milliseconds);
+      
       resultValue = Number(milliseconds) + Number(seconds) * 1000 + Number(minutes) * 60 * 1000;
     } else if (s.length == 2) {
       s[0] = s[0].slice(0, 2);
