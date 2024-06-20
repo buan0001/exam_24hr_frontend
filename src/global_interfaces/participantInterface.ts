@@ -67,7 +67,9 @@ export type ResultListItem = {
 
 export type NewResult = {
   id?: number;
+  participant: ListParticipant;
   date: string;
-  result: string;
-  discipline: Discipline
+  resultValue: number | string;
+  discipline: Discipline;
+  
 };

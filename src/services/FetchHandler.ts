@@ -64,7 +64,7 @@ async function getResults() : Promise<ResultListItem[]>  {
   return response;
 }
 
-async function submitResult(result) : Promise<ResultListItem> {
+async function submitResult(result: NewResult) : Promise<ResultListItem> {
   const URL = result.id ? `${RESULTS_URL}/${result.id}` : RESULTS_URL;
   const response = await fetch(URL, {
     method: result.id ? "PUT" : "POST",

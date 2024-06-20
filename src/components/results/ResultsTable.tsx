@@ -51,6 +51,10 @@ export default function ResultsTable({ results, disciplines, setFormResult, setR
     }
   }
 
+  async function handleFormClicked(result: ResultListItem) {
+     setFormResult({participant: result.participant, id: result.id, resultValue:result.result, discipline:result.discipline, date:result.date})
+  }
+
   return (
     <div>
       <h3>
@@ -102,7 +106,7 @@ export default function ResultsTable({ results, disciplines, setFormResult, setR
               <td>{result.participant.ageGroup}</td>
               <td>{capitalizeFirstLetter(result.participant.gender)}</td>
               <td>
-                <button onClick={() => setFormResult({id: result.id, result:result.result, discipline:result.discipline, date:result.date})}>Edit result</button>
+                <button onClick={() => handleFormClicked(result)}>Edit result</button>
               </td>
               <td>
                 <button onClick={() => handleDeleteClicked(result.id)}>Delete result</button>
