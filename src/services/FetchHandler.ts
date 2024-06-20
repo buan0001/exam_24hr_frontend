@@ -64,10 +64,23 @@ async function getResults() : Promise<ResultListItem[]>  {
   return response;
 }
 
-async function submitResult(result: NewResult) : Promise<ResultListItem> {
-  const URL = result.id ? `${RESULTS_URL}/${result.id}` : RESULTS_URL;
-  const response = await fetch(URL, {
-    method: result.id ? "PUT" : "POST",
+async function updateResult(result: NewResult) : Promise<ResultListItem> {
+  const response = await fetch(`${RESULTS_URL}/${result.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(result),
+  }).then((response) => response.json());
+
+  return response;
+}
+
+async function postResults(result: NewResult[]) : Promise<ResultListItem> {
+  console.log("Posting results", result);
+  
+  const response = await fetch(RESULTS_URL, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -86,4 +99,4 @@ async function deleteResult(id: number) : Promise<boolean> {
   else return false
 }
 
-export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults, deleteResult, submitResult };
+export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults, deleteResult, postResults , updateResult };

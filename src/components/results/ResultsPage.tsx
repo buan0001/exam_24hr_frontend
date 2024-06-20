@@ -9,6 +9,7 @@ export default function ResultsPage() {
   const [formResult, setFormResult] = useState<NewResult>();
   const [disciplines, setDisciplines] = useState([]);
   const [participants, setParticipants] = useState<Participant[]>([])
+  const [creatingMultiple, setCreatingMultiple] = useState<boolean>(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -23,10 +24,18 @@ export default function ResultsPage() {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
-        <ResultsForm formResult={formResult} setFormResult={setFormResult} disciplines={disciplines} setResults={setResults} participants={participants} />
+        <ResultsForm
+          formResult={formResult}
+          setFormResult={setFormResult}
+          disciplines={disciplines}
+          setResults={setResults}
+          participants={participants}
+          creatingMultiple={creatingMultiple}
+          setCreatingMultiple={setCreatingMultiple}
+        />
       </div>
       <div>
-        <ResultsTable results={results} disciplines={disciplines} setFormResult={setFormResult} setResults={setResults} />
+        <ResultsTable results={results} disciplines={disciplines} setFormResult={setFormResult} setResults={setResults} creatingMultiple={creatingMultiple} />
       </div>
     </div>
   );

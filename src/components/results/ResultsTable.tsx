@@ -1,6 +1,6 @@
 import { Discipline, NewResult, ResultListItem } from "../../global_interfaces/participantInterface";
 import React, { useState } from "react";
-import { capitalizeFirstLetter } from "../../helpers/helperFunctions";
+import { capitalizeFirstLetter, convertResultToReadable } from "../../helpers/helperFunctions";
 import { deleteResult, getResults } from "../../services/FetchHandler";
 
 type FilterObject = {
@@ -11,13 +11,26 @@ type FilterObject = {
   [key: string]: string;
 };
 
-export default function ResultsTable({ results, disciplines, setFormResult, setResults }: 
-    { results: ResultListItem[]; disciplines: Discipline[]; setFormResult: (r: NewResult) => void; setResults: (r: ResultListItem[]) => void}) {
+export default function ResultsTable({
+  results,
+  disciplines,
+  setFormResult,
+  setResults,
+  creatingMultiple,
+}: {
+  results: ResultListItem[];
+  disciplines: Discipline[];
+  setFormResult: (r: NewResult) => void;
+  setResults: (r: ResultListItem[]) => void;
+  creatingMultiple: boolean;
+}) {
   const [filter, setFilter] = useState<FilterObject>({ discipline: "100m hurdles", ageGroup: "", gender: "" });
 
   console.log("Results", results);
 
   function sortedAndFilteredResults() {
+    console.log("results",results);
+    
     // if (!results) {return [<div>No results found</div>]}
     const filteredResults = results.filter((result) => {
       if (filter.discipline !== "" && filter.discipline.toLocaleLowerCase() != result.discipline.name.toLocaleLowerCase()) return false;
@@ -52,7 +65,11 @@ export default function ResultsTable({ results, disciplines, setFormResult, setR
   }
 
   async function handleFormClicked(result: ResultListItem) {
-     setFormResult({participant: result.participant, id: result.id, resultValue:result.result, discipline:result.discipline, date:result.date})
+    if (creatingMultiple) {
+      console.log("Creating multiple results, cannot edit");
+      return;
+    }
+    setFormResult({ participant: result.participant, id: result.id, resultValue: convertResultToReadable(result), discipline: result.discipline, date: result.date });
   }
 
   return (
