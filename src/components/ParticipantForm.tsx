@@ -38,7 +38,7 @@ export default function ParticipantForm({
   }
 
   function disciplineChanged(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log("target value", e.target.value);
+    // console.log("target value", e.target.value);
     if (formParticipant.disciplines.find((discipline) => discipline.name === e.target.value)) {
       setFormParticipant({
         ...formParticipant,
@@ -52,6 +52,8 @@ export default function ParticipantForm({
   }
 
   function generateDisciplineOptions() {
+    // console.log("form part",formParticipant);
+    
     if (disciplines.length === 0) {
       return <option value={""}>No disciplines available</option>;
     }
@@ -65,15 +67,17 @@ export default function ParticipantForm({
   
   function generateClubOptions() {
     return clubs.map((club) => (
-      <option key={club} value={club}>
-        {capitalizeFirstLetter(club)}
+      <option key={club} value={club} selected={club.toLocaleLowerCase() == formParticipant.club.toLocaleLowerCase()}>
+        {/* {capitalizeFirstLetter(club)}
+         */}
+         {club}
       </option>
     ));
   }
 
-  function capitalizeFirstLetter(string: string) {
-    return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
-  }
+  // function capitalizeFirstLetter(string: string) {
+  //   return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
+  // }
   return (
     <>
       <h1>Participant Form</h1>

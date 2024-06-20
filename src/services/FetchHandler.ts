@@ -14,6 +14,7 @@ async function getParticipants(): Promise<Participant[]> {
 }
 
 async function getParticipant(id: number): Promise<Participant> {
+  if (!id) return;
   const response = await fetch(`${PARTICIPANT_URL}/${id}`).then((response) => response.json());
 
   return response;

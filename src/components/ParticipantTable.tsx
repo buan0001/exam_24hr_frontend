@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteParticipant,  getParticipant, getParticipants } from "../services/FetchHandler";
+import { deleteParticipant, getParticipant, getParticipants } from "../services/FetchHandler";
 import { Discipline, Participant } from "../global_interfaces/participantInterface";
 
 type FilterValues = {
@@ -48,7 +48,9 @@ export default function ParticipantTable({
   }
 
   async function handleUpdateClicked(participant: Participant) {
-    setFormParticipant(participant);
+    const res = await getParticipant(participant.id!);
+    if (!res) return console.log("No participant found");
+    setFormParticipant(res);
   }
 
   async function handleDelete(id: number | undefined) {
@@ -83,43 +85,48 @@ export default function ParticipantTable({
       return 0;
     });
     if (!sortDir) sorted.reverse();
-console.log("filter values",filterValues);
-const filtered = sorted.filter((participant) => {
-  let bool = true 
-  for (const key in filterValues) {
-    console.log("key",key);
-    console.log(participant[key]);
-    console.log("participant", participant);
-    
-    
-    
-    if(filterValues[key] === "") continue
-    else if (key === "disciplines") {
-      if (!participant.disciplines) {bool = false; break}
-      let bool2 = false
-      for (const discipline of participant.disciplines) {
-        console.log("discipline",discipline.name);
-        
-        if (discipline.name.toLocaleLowerCase() === filterValues[key].toLocaleLowerCase()) {bool2 = true}
+    console.log("filter values", filterValues);
+    const filtered = sorted.filter((participant) => {
+      let bool = true;
+      for (const key in filterValues) {
+        // console.log("key", key);
+        // console.log(participant[key]);
+        // console.log("participant", participant);
+
+        if (filterValues[key] === "") continue;
+        else if (key === "disciplines") {
+          if (!participant.disciplines) {
+            bool = false;
+            break;
+          }
+          let bool2 = false;
+          for (const discipline of participant.disciplines) {
+            // console.log("discipline", discipline.name);
+
+            if (discipline.name.toLocaleLowerCase() === filterValues[key].toLocaleLowerCase()) {
+              bool2 = true;
+            }
+          }
+          if (!bool2) {
+            bool = false;
+          }
+        } else if (filterValues[key].toLocaleLowerCase() !== participant[key].toLocaleLowerCase()) {
+          bool = false;
+        }
+        // else if (filterValues[key].toLocaleLowerCase() !== participant[key.slice(6)[1]].toLocaleLowerCase()) {bool = false}
       }
-      if (!bool2) {bool = false}
-    }
-    else if ( filterValues[key].toLocaleLowerCase() !== participant[key].toLocaleLowerCase()) {bool = false}
-    // else if (filterValues[key].toLocaleLowerCase() !== participant[key.slice(6)[1]].toLocaleLowerCase()) {bool = false}
-  }
-  return bool
-})
+      return bool;
+    });
     // const filtered = sorted.filter((participant) => {
-      
+
     // });
 
-    console.log("filtered", filtered);
-    
+    // console.log("filtered", filtered);
+
     return filtered;
   }
 
   function generateClubOptions() {
-
     return clubs.map((club) => (
       <option key={club} value={club}>
         {capitalizeFirstLetter(club)}
@@ -239,56 +246,59 @@ const filtered = sorted.filter((participant) => {
           </tr>
         </thead>
         <tbody>
-          {filteredAndSortedParticipants().length > 0 ? filteredAndSortedParticipants().map((participant) => (
-            <tr key={participant.id}>
-              <td>{participant.name}</td>
-              <td>{participant.ageGroup}</td>
-              <td>{participant.gender}</td>
-              <td>{participant.club}</td>
-              {/* <td>
+          {filteredAndSortedParticipants().length > 0 ? (
+            filteredAndSortedParticipants().map((participant) => (
+              <tr key={participant.id}>
+                <td>{participant.name}</td>
+                <td>{participant.ageGroup}</td>
+                <td>{participant.gender}</td>
+                <td>{participant.club}</td>
+                {/* <td>
                 <ul>{ generateDisciplines(participant)}</ul>
               </td> */}
 
-              <td>
-                <button
-                  style={{
-                    backgroundColor: "blue",
-                    opacity: 0.7,
-                  }}
-                  onClick={() => getDetailsClicked(participant.id)}
-                >
-                  Details
-                </button>
-              </td>
-              <td>
-                <button
-                  onClick={() => {
-                    handleUpdateClicked(participant);
-                  }}
-                  style={{
-                    backgroundColor: "green",
-                    opacity: 0.7,
-                  }}
-                >
-                  Update
-                </button>
-              </td>
-              <td>
-                <button
-                  style={{
-                    backgroundColor: "red",
-                    opacity: 0.7,
-                  }}
-                  onClick={() => {
-                    handleDelete(participant.id);
-                  }}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))
-        : <h2>No participants found</h2>}
+                <td>
+                  <button
+                    style={{
+                      backgroundColor: "blue",
+                      opacity: 0.7,
+                    }}
+                    onClick={() => getDetailsClicked(participant.id)}
+                  >
+                    Details
+                  </button>
+                </td>
+                <td>
+                  <button
+                    onClick={() => {
+                      handleUpdateClicked(participant);
+                    }}
+                    style={{
+                      backgroundColor: "green",
+                      opacity: 0.7,
+                    }}
+                  >
+                    Update
+                  </button>
+                </td>
+                <td>
+                  <button
+                    style={{
+                      backgroundColor: "red",
+                      opacity: 0.7,
+                    }}
+                    onClick={() => {
+                      handleDelete(participant.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <h2>No participants found</h2>
+          )}
         </tbody>
       </table>
     </>

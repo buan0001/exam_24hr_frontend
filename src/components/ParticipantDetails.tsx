@@ -1,8 +1,10 @@
-import { Participant } from "../global_interfaces/participantInterface";
+import { DetailedParticipant, Participant } from "../global_interfaces/participantInterface";
 import { defaultParticipant } from "../global_interfaces/emptyInstancedInterfaces";
 
-export default function ParticipantDetails({ selectedParticipant, setSelectedParticipant }: { selectedParticipant: Participant; setSelectedParticipant: (participant: Participant) => void }) {
+export default function ParticipantDetails({ selectedParticipant, setSelectedParticipant }: { selectedParticipant: DetailedParticipant; setSelectedParticipant: (participant: Participant) => void }) {
   function generateResults() {
+    console.log("selected participant",selectedParticipant);
+    
     if (selectedParticipant.results.length === 0)
       return (
         <>
@@ -23,8 +25,8 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
             {selectedParticipant.results.map((result) => (
               <tr key={result.id}>
                 <td>{result.date}</td>
-                <td>{result.resultValue}</td>
-                <td>{result.discipline.name}</td>
+                <td>{result.result}</td>
+                <td>{result.discipline}</td>
               </tr>
             ))}
           </tbody>
@@ -45,7 +47,7 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
         <ul>
           {selectedParticipant.disciplines.map((discipline) => (
             <li key={discipline.name}>
-              {discipline.name} ({discipline.resultType})
+              {discipline.name}
             </li>
           ))}
         </ul>
