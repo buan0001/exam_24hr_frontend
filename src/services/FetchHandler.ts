@@ -1,8 +1,9 @@
-import { Participant } from "../global_interfaces/participantInterface";
+import { Participant, ResultListItem } from "../global_interfaces/participantInterface";
 
 const API_URL = "http://localhost:8080/";
 const PARTICIPANT_URL = API_URL + "participants";
 const DISCIPLINE_URL = API_URL + "disciplines";
+const RESULTS_URL = API_URL + "results";
 
 async function getParticipants(): Promise<Participant[]> {
   // console.log("Fetching participants");
@@ -58,4 +59,10 @@ async function getClubs() {
   return response;
 }
 
-export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs };
+async function getResults() : Promise<ResultListItem[]>  {
+  const response = await fetch(RESULTS_URL).then((response) => response.json());
+  return response;
+
+}
+
+export { getParticipants, getParticipant, postParticipant, deleteParticipant, getDisciplines, getClubs, getResults };

@@ -79,10 +79,7 @@ export default function ParticipantTable({
 
     const sorted = searched.sort((a, b) => {
       if (sort === "age") return a.age - b.age;
-      if (sort === "name") return a.name.localeCompare(b.name);
-      if (sort === "club") return a.club.localeCompare(b.club);
-      if (sort === "gender") return a.gender.localeCompare(b.gender);
-      return 0;
+      else {return a[sort].localeCompare(b[sort]);}
     });
     if (!sortDir) sorted.reverse();
     // console.log("filter values", filterValues);

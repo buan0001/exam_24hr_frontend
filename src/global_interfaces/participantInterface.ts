@@ -18,6 +18,7 @@ export type Result = {
   id?: number;
   date: string;
   result: string;
+  resultValue: number;
   resultType: string;
   discipline: Discipline;
 };
@@ -36,6 +37,7 @@ export type ListParticipant = {
   birthDate?: string;
   gender: string;
   club: string;
+  disciplines: Discipline[];
 };
 
 export type DetailedParticipant = {
@@ -48,4 +50,14 @@ export type DetailedParticipant = {
   club: string;
   disciplines: Discipline[];
   results: Result[];
+};
+
+export type ResultListItem = {
+  id: number;
+  date: string;
+  discipline: Discipline;
+  participant: ListParticipant;
+  result: string;
+  resultValue: number;
+  resultType: string;
 };

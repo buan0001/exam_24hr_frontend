@@ -11,7 +11,7 @@ export default function NavHeader() {
         </div>
         <div>
           <NavLink className={"link"}  to="/results">
-            Other
+            Results
           </NavLink>
         </div>
         <div>

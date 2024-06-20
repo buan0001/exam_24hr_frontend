@@ -33,7 +33,7 @@ export default function ParticipantPage() {
     get();
   }, [participants]);
 
-  // TODO: Implement CRUD functionality to trophies
+  
   return (
     <>
       <div>
