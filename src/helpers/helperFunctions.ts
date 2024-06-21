@@ -19,7 +19,10 @@ export function cleanResult(result: NewResult): number | false {
     // console.log("s", s);
     
     const whole = s[0].slice(0, 2);
-    let decimal = s[1].slice(0, 3);
+    let decimal = s[1].slice(0, 2);
+
+    console.log("whole", whole, "decimal", decimal);
+    
 
     if (Number(decimal) < 10) decimal = "0" + decimal;
     resultValue = Number(whole) * 100 + Number(decimal);

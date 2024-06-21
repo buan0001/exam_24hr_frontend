@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Discipline, ListParticipant, NewResult, Participant, ResultListItem } from "../../global_interfaces/participantInterface";
 import { getResults, postResults, updateResult } from "../../services/FetchHandler";
 import { cleanResult, convertResultToReadable } from "../../helpers/helperFunctions";
+import { FilterObject } from "./ResultsTable";
 
 const emptyObj = {
   participant: {} as ListParticipant,
@@ -18,6 +19,8 @@ export default function ResultsForm({
   participants,
   creatingMultiple,
   setCreatingMultiple,
+  filter,
+  setFilter,
 }: {
   formResult: NewResult | undefined;
   setFormResult: (n: NewResult) => void;
@@ -26,6 +29,8 @@ export default function ResultsForm({
   participants: Participant[];
   creatingMultiple: boolean;
   setCreatingMultiple: (b: boolean) => void;
+  filter: FilterObject;
+  setFilter: (obj: FilterObject) => void;
 }) {
   const [error, setError] = useState<string>("");
   const [finalResults, setFinalResults] = useState<NewResult[]>([]);
@@ -60,6 +65,7 @@ export default function ResultsForm({
         setFinalResults([]);
         setCreatingMultiple(false);
       }
+      setFilter({ ...filter, discipline: formResult.discipline.name });
       setResults(await getResults());
       setFormResult(emptyObj);
       setError("");
@@ -89,11 +95,9 @@ export default function ResultsForm({
       console.log("form", formResult);
       if (formResult.participant.disciplines && !formResult.participant.disciplines.find((d) => Number(d.id) == Number(s[2]))) {
         console.log("discipline not found in participant", s[2]);
-        
-        setFormResult({ ...formResult, participant:{} as ListParticipant, discipline: { name: s[0], resultType: s[1], id: Number(s[2]) } });
-      }
-      else {
 
+        setFormResult({ ...formResult, participant: {} as ListParticipant, discipline: { name: s[0], resultType: s[1], id: Number(s[2]) } });
+      } else {
         setFormResult({ ...formResult, discipline: { name: s[0], resultType: s[1], id: Number(s[2]) } });
       }
     } else if (name == "participant") {
@@ -122,9 +126,11 @@ export default function ResultsForm({
   async function handleSaveAll() {
     try {
       await postResults(finalResults);
+      setFilter({...filter, discipline:formResult.discipline.name});
       setFinalResults([]);
       setCreatingMultiple(false);
       setResults(await getResults());
+      setFormResult(emptyObj);
     } catch (error) {
       console.error("Error saving results", error);
     }
@@ -135,10 +141,10 @@ export default function ResultsForm({
 
     const res = participants.filter((parti) => parti.disciplines.find((dis) => dis.id == formResult.discipline.id));
     // console.log("elligbile participants", res);
-
+// selected={participant.name == formResult.participant.name}
     return res.map((participant) => (
       <>
-        <option key={participant.id} value={participant.id} selected={participant.id == formResult.participant.id}>
+        <option key={participant.id} value={participant.id} >
           {participant.name}
         </option>
       </>
@@ -151,12 +157,14 @@ export default function ResultsForm({
         {finalResults.length > 0 && (
           <>
             <h2>Results to be submitted</h2>
-            <button onClick={handleSaveAll}>Save all</button>
+            <button className="submit-btn" onClick={handleSaveAll}>
+              Save all
+            </button>
           </>
         )}
         {finalResults.length > 0 &&
-          finalResults.map((result) => (
-            <ul key={result.participant.name}>
+          finalResults.map((result, index) => (
+            <ul key={result.participant.name + index}>
               <li>{result.discipline.name}</li>
               <li>{result.participant.name}</li>
               <li>{convertResultToReadable(result)}</li>
@@ -166,6 +174,7 @@ export default function ResultsForm({
       </div>
       <div>
         <h2>Results form</h2>
+
         {error && <div>{error}</div>}
         <form style={{ display: "flex", flexDirection: "column", gap: "1vw", padding: "1vw", margin: "1vw" }}>
           <label>
@@ -185,7 +194,7 @@ export default function ResultsForm({
               <input type="date" name="date" value={formResult.date} onChange={handleFormInputChange} />
             </label>
           </div>
-          <select name="participant" id="" onChange={handleFormInputChange}>
+          <select name="participant" id="" value={formResult.participant.id} onChange={handleFormInputChange}>
             <option value="">Select participant</option>
             {participants && generateParticipants()}
           </select>
@@ -196,7 +205,7 @@ export default function ResultsForm({
           </button>
 
           <button className="submit-btn" type="button" onClick={() => handleSubmit(formResult)}>
-            Submit
+            {formResult.id ? "Update" : "Submit"}
           </button>
           <button className="reset-btn" type="reset" onClick={() => setFormResult(emptyObj)}>
             Reset

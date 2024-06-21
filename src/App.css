@@ -53,6 +53,8 @@
   transition: background-color 300ms;
 }
 
+
+
 .delete-button, .reset-btn{
   margin-top: 1em;
 
@@ -75,4 +77,9 @@
   border-radius: 0.5em;
   cursor: pointer;
   transition: background-color 300ms;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

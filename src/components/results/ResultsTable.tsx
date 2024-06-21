@@ -1,9 +1,9 @@
 import { Discipline, NewResult, ResultListItem } from "../../global_interfaces/participantInterface";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { capitalizeFirstLetter, convertResultToReadable } from "../../helpers/helperFunctions";
 import { deleteResult, getResults } from "../../services/FetchHandler";
 
-type FilterObject = {
+export type FilterObject = {
   discipline: string;
   ageGroup: string;
   gender: string;
@@ -17,14 +17,18 @@ export default function ResultsTable({
   setFormResult,
   setResults,
   creatingMultiple,
+  filter,
+  setFilter,
 }: {
   results: ResultListItem[];
   disciplines: Discipline[];
   setFormResult: (r: NewResult) => void;
   setResults: (r: ResultListItem[]) => void;
   creatingMultiple: boolean;
+  filter: FilterObject;
+  setFilter: (f: FilterObject) => void;
 }) {
-  const [filter, setFilter] = useState<FilterObject>({ discipline: "100m hurdles", ageGroup: "", gender: "" });
+  
 
     useEffect(() => {
       function update() {

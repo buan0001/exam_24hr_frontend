@@ -67,10 +67,10 @@ export default function ParticipantTable({
   }
 
   function filterValuesChanged(e: React.ChangeEvent<HTMLSelectElement>) {
-    if (typeof e.target.name == "string" && typeof e.target.value == "string") {
+    
       setFilterValues({ ...filterValues, [e.target.name]: e.target.value });
       console.log("filterValues", filterValues);
-    }
+    
   }
 
   function filteredAndSortedParticipants() {
@@ -108,15 +108,10 @@ export default function ParticipantTable({
         } else if (filterValues[key].toLocaleLowerCase() !== participant[key].toLocaleLowerCase()) {
           bool = false;
         }
-        // else if (filterValues[key].toLocaleLowerCase() !== participant[key.slice(6)[1]].toLocaleLowerCase()) {bool = false}
       }
       return bool;
     });
-    // const filtered = sorted.filter((participant) => {
 
-    // });
-
-    // console.log("filtered", filtered);
 
     return filtered;
   }
@@ -156,26 +151,16 @@ export default function ParticipantTable({
   }
 
 
-
-  // function generateDisciplines(participant: Participant) {
-  //   // console.log("DISCIPLINES ARE:",participant);
-  //   if (!participant.disciplines) return (<li>No disciplines</li>);
-  //   let string = "";
-  //    participant.disciplines.map((disc) => {
-  //     string += disc.name + ", ";
-  //     // return <li key={disc.name}>{disc.name}</li>;
-  //   });
-  //   return string
-  // }
-
   return (
     <>
       <h1>Participants</h1>
       <div
         style={{
           display: "grid",
-          flexDirection: "row",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: "1em",
+          margin: "1em",
+          padding: "1em",
         }}
       >
         <div>
@@ -222,7 +207,10 @@ export default function ParticipantTable({
           <input type="checkbox" name="directionBox" onChange={() => setSortDir(!sortDir)}></input>
         </div>
         <div>
-          <input type="text" placeholder="Search" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+          <label htmlFor="search">
+            Name
+            <input type="text" placeholder="Search" name="search" value={searchValue} onChange={(e) => setSearchValue(e.target.value)} />
+          </label>
         </div>
       </div>
       <table>
@@ -232,7 +220,6 @@ export default function ParticipantTable({
             <th>Age group</th>
             <th>Gender</th>
             <th>Club</th>
-            {/* <th>Disciplines</th> */}
             <th>Details</th>
             <th>Update</th>
             <th>Delete</th>
@@ -246,20 +233,15 @@ export default function ParticipantTable({
                 <td>{participant.ageGroup}</td>
                 <td>{capitalizeFirstLetter(participant.gender)}</td>
                 <td>{participant.club}</td>
-                {/* <td>
-                <ul>{ generateDisciplines(participant)}</ul>
-              </td> */}
 
                 <td>
-                  <button className="details-button"
-                    onClick={() => getDetailsClicked(participant.id)}
-                  >
+                  <button className="details-button" onClick={() => getDetailsClicked(participant.id)}>
                     Details
                   </button>
                 </td>
                 <td>
                   <button
-                  className="edit-button"
+                    className="edit-button"
                     onClick={() => {
                       handleUpdateClicked(participant);
                     }}
@@ -269,7 +251,7 @@ export default function ParticipantTable({
                 </td>
                 <td>
                   <button
-                  className="delete-button"
+                    className="delete-button"
                     onClick={() => {
                       handleDelete(participant.id);
                     }}

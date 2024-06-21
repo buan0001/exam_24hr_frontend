@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ResultsForm from "./ResultsForm";
-import ResultsTable from "./ResultsTable";
+import ResultsTable, { FilterObject } from "./ResultsTable";
 import {  getDisciplines, getParticipants, getResults } from "../../services/FetchHandler";
 import {   NewResult, Participant, ResultListItem } from "../../global_interfaces/participantInterface";
 
@@ -10,6 +10,7 @@ export default function ResultsPage() {
   const [disciplines, setDisciplines] = useState([]);
   const [participants, setParticipants] = useState<Participant[]>([])
   const [creatingMultiple, setCreatingMultiple] = useState<boolean>(false);
+  const [filter, setFilter] = useState<FilterObject>({ discipline: "100m hurdles", ageGroup: "", gender: "" });
 
   useEffect(() => {
     async function fetchData() {
@@ -34,10 +35,12 @@ export default function ResultsPage() {
           participants={participants}
           creatingMultiple={creatingMultiple}
           setCreatingMultiple={setCreatingMultiple}
+          setFilter={setFilter}
+          filter={filter}
         />
       </div>
       <div>
-        <ResultsTable results={results} disciplines={disciplines} setFormResult={setFormResult} setResults={setResults} creatingMultiple={creatingMultiple} />
+        <ResultsTable results={results} disciplines={disciplines} setFormResult={setFormResult} setResults={setResults} creatingMultiple={creatingMultiple} filter={filter} setFilter={setFilter} />
       </div>
     </div>
   );
