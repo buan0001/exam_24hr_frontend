@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Discipline, ListParticipant, NewResult, Participant, ResultListItem } from "../../global_interfaces/participantInterface";
 import { getResults, postResults, updateResult } from "../../services/FetchHandler";
-import { cleanResult,  convertResultToReadable } from "../../helpers/helperFunctions";
+import { cleanResult, convertResultToReadable } from "../../helpers/helperFunctions";
 
 const emptyObj = {
   participant: {} as ListParticipant,
@@ -31,7 +31,7 @@ export default function ResultsForm({
   const [finalResults, setFinalResults] = useState<NewResult[]>([]);
 
   function validate(result: NewResult): NewResult | false {
-    if (!formResult.participant || !formResult.discipline || !formResult.date || !formResult.resultValue) {
+    if (!formResult.participant || !formResult.participant.id || !formResult.discipline || !formResult.date || !formResult.resultValue) {
       setError("All fields must be filled out");
       return false;
     }
@@ -86,12 +86,19 @@ export default function ResultsForm({
     const { name, value } = e.target;
     if (name == "discipline") {
       const s = value.split("-");
-      // console.log("split", s);
+      console.log("form", formResult);
+      if (formResult.participant.disciplines && !formResult.participant.disciplines.find((d) => Number(d.id) == Number(s[2]))) {
+        console.log("discipline not found in participant", s[2]);
+        
+        setFormResult({ ...formResult, participant:{} as ListParticipant, discipline: { name: s[0], resultType: s[1], id: Number(s[2]) } });
+      }
+      else {
 
-      setFormResult({ ...formResult, discipline: { name: s[0], resultType: s[1] } });
+        setFormResult({ ...formResult, discipline: { name: s[0], resultType: s[1], id: Number(s[2]) } });
+      }
     } else if (name == "participant") {
       const p = participants.find((p) => p.id == Number(value));
-      // console.log("participant", p);
+      console.log("participant", p);
       if (p) {
         setFormResult({ ...formResult, participant: p });
       }
@@ -106,7 +113,7 @@ export default function ResultsForm({
 
     return (
       <label>
-        {ret == "THROW" || ret == "JUMP" ? "Format: M,CM" : ret === "POINTS" ? "Points" : "Format: MM.SS.MSS"}
+        {ret == "THROW" || ret == "JUMP" ? "Format: m,cm" : ret === "POINTS" ? "Points" : "Format: mm.ss.mss"}
         <input type="text" name="resultValue" value={formResult.resultValue} onChange={handleFormInputChange} />
       </label>
     );
@@ -121,6 +128,21 @@ export default function ResultsForm({
     } catch (error) {
       console.error("Error saving results", error);
     }
+  }
+
+  function generateParticipants() {
+    // console.log(formResult.discipline);
+
+    const res = participants.filter((parti) => parti.disciplines.find((dis) => dis.id == formResult.discipline.id));
+    // console.log("elligbile participants", res);
+
+    return res.map((participant) => (
+      <>
+        <option key={participant.id} value={participant.id} selected={participant.id == formResult.participant.id}>
+          {participant.name}
+        </option>
+      </>
+    ));
   }
 
   return (
@@ -151,7 +173,7 @@ export default function ResultsForm({
             <select name="discipline" onChange={handleFormInputChange} disabled={creatingMultiple}>
               <option value="">Select discipline</option>
               {disciplines.map((discipline) => (
-                <option key={discipline.name} selected={discipline.name === formResult.discipline.name} value={discipline.name + "-" + discipline.resultType}>
+                <option key={discipline.name} selected={discipline.name === formResult.discipline.name} value={discipline.name + "-" + discipline.resultType + "-" + discipline.id}>
                   {discipline.name}
                 </option>
               ))}
@@ -165,23 +187,18 @@ export default function ResultsForm({
           </div>
           <select name="participant" id="" onChange={handleFormInputChange}>
             <option value="">Select participant</option>
-            {participants &&
-              participants.map((participant) => (
-                <option key={participant.id} value={participant.id} selected={participant.id == formResult.participant.id}>
-                  {participant.name}
-                </option>
-              ))}
+            {participants && generateParticipants()}
           </select>
           {generateResultInput()}
 
-          <button type="button" onClick={() => handleMoreResults()}>
+          <button type="button" style={{ backgroundColor: "rgba(0, 255, 0, .5)" }} onClick={() => handleMoreResults()}>
             Add more results
           </button>
 
-          <button type="button" onClick={() => handleSubmit(formResult)}>
+          <button className="submit-btn" type="button" onClick={() => handleSubmit(formResult)}>
             Submit
           </button>
-          <button type="reset" onClick={() => setFormResult(emptyObj)}>
+          <button className="reset-btn" type="reset" onClick={() => setFormResult(emptyObj)}>
             Reset
           </button>
         </form>

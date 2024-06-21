@@ -21,7 +21,7 @@ export default function ParticipantForm({
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log("posting participant", formParticipant);
-    if (formParticipant.name === "" || formParticipant.birthDate === "" || formParticipant.club === "" || formParticipant.gender === "") return setErrorMessage("Please fill out all fields");
+    if (formParticipant.name === "" || formParticipant.birthDate === "" || formParticipant.club === "" || formParticipant.gender === "" || formParticipant.disciplines.length == 0) return setErrorMessage("Please fill out all fields");
 
     const response = await postParticipant(formParticipant);
 
@@ -42,15 +42,16 @@ export default function ParticipantForm({
 
   function disciplineChanged(e: React.ChangeEvent<HTMLSelectElement>) {
     console.log("target value", e.target.value);
-    if (formParticipant.disciplines.find((discipline) => discipline.name === e.target.value)) {
+    const [disciplineName, disciplineId] = e.target.value.split("-");
+    if (formParticipant.disciplines.find((discipline) => Number(discipline.id) === Number(disciplineId))) {
       setFormParticipant({
         ...formParticipant,
         disciplines: formParticipant.disciplines.filter((discipline) => {
-          return discipline.name !== e.target.value;
+          return discipline.name !== disciplineName;
         }),
       });
     } else {
-      setFormParticipant({ ...formParticipant, disciplines: [...formParticipant.disciplines, { name: e.target.value }] });
+      setFormParticipant({ ...formParticipant, disciplines: [...formParticipant.disciplines, { name: disciplineName, id: Number(disciplineId) }] });
     }
   }
 
@@ -61,7 +62,7 @@ export default function ParticipantForm({
       return <option value={""}>No disciplines available</option>;
     }
     return disciplines.map((discipline) => (
-      <option key={discipline.name} value={discipline.name}>
+      <option key={discipline.name} value={discipline.name+"-"+discipline.id}>
         {discipline.name}
       </option>
     ));
@@ -70,8 +71,6 @@ export default function ParticipantForm({
   function generateClubOptions() {
     return clubs.map((club) => (
       <option key={club} value={club} selected={club.toLocaleLowerCase() == formParticipant.club.toLocaleLowerCase()}>
-        {/* {capitalizeFirstLetter(club)}
-         */}
         {club}
       </option>
     ));
@@ -113,8 +112,8 @@ export default function ParticipantForm({
             <option value={""}>Select disciplines</option>
             {generateDisciplineOptions()}
           </select>
-          <button type="submit">Submit</button>
-          <button type="reset" onClick={()=> setFormParticipant(defaultParticipant)}>Clear</button>
+          <button type="submit" className="submit-btn">Submit</button>
+          <button type="reset" className="reset-btn" onClick={()=> setFormParticipant(defaultParticipant)}>Clear</button>
         </form>
         <div>
           <h3>Selected disciplines:</h3>

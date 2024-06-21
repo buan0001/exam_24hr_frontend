@@ -45,14 +45,14 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
 
         <h2>Disciplines:</h2>
         <ul>
-          {selectedParticipant.disciplines.map((discipline) => (
+          {selectedParticipant.disciplines && selectedParticipant.disciplines.map((discipline) => (
             <li key={discipline.name}>{discipline.name}</li>
           ))}
         </ul>
         <h2>Results</h2>
         {generateResults()}
 
-        <button onClick={() => setSelectedParticipant(defaultParticipant)}>Close</button>
+        <button className="details-button" onClick={() => setSelectedParticipant(defaultParticipant)}>Close</button>
       </>
     );
   }

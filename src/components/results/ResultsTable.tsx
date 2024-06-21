@@ -1,5 +1,5 @@
 import { Discipline, NewResult, ResultListItem } from "../../global_interfaces/participantInterface";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { capitalizeFirstLetter, convertResultToReadable } from "../../helpers/helperFunctions";
 import { deleteResult, getResults } from "../../services/FetchHandler";
 
@@ -26,6 +26,14 @@ export default function ResultsTable({
 }) {
   const [filter, setFilter] = useState<FilterObject>({ discipline: "100m hurdles", ageGroup: "", gender: "" });
 
+    useEffect(() => {
+      function update() {
+        if (disciplines.length > 0) {
+        setFilter({ ...filter, discipline: disciplines[0].name });
+        }
+      }
+      update();
+    }, [disciplines]);
   // console.log("Results", results);
 
   function sortedAndFilteredResults() {
@@ -57,11 +65,9 @@ export default function ResultsTable({
 
   async function handleDeleteClicked(id: number) {
     console.log("delete clicked");
-    const res = await deleteResult(id);
-    if (res) {
-      console.log("Result deleted");
-      setResults(await getResults());
-    }
+    await deleteResult(id);
+
+    setResults(await getResults());
   }
 
   async function handleFormClicked(result: ResultListItem) {
@@ -76,7 +82,7 @@ export default function ResultsTable({
     <div>
       <h3>
         <label htmlFor="discipline">Discipline</label>
-        <select name="discipline" onChange={handleFilterChanged}>
+        <select name="discipline" onChange={handleFilterChanged} value={filter.discipline}>
           {disciplines.map((discipline) => (
             <option key={discipline.name} value={discipline.name}>
               {discipline.name}
@@ -117,16 +123,16 @@ export default function ResultsTable({
           {sortedAndFilteredResults().map((result) => (
             <tr key={result.id}>
               <td>{result.date}</td>
-              <td>{result.result}</td>
+              <td>{convertResultToReadable(result)}</td>
               <td>{result.discipline.name}</td>
               <td>{result.participant.name}</td>
               <td>{result.participant.ageGroup}</td>
               <td>{capitalizeFirstLetter(result.participant.gender)}</td>
               <td>
-                <button onClick={() => handleFormClicked(result)}>Edit result</button>
+                <button className="edit-button" onClick={() => handleFormClicked(result)}>Edit result</button>
               </td>
               <td>
-                <button onClick={() => handleDeleteClicked(result.id)}>Delete result</button>
+                <button className="delete-button" onClick={() => handleDeleteClicked(result.id)}>Delete result</button>
               </td>
             </tr>
           ))}

@@ -40,3 +40,39 @@
 .read-the-docs {
   color: #888;
 }
+
+.edit-button, .submit-btn{
+  margin-top: 1em;
+
+  background-color: #61dafb;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 300ms;
+}
+
+.delete-button, .reset-btn{
+  margin-top: 1em;
+
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 300ms;
+}
+
+.details-button{
+  margin-top: 1em;
+
+  background-color: #888 ;
+  color: white;
+  border: none;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  cursor: pointer;
+  transition: background-color 300ms;
+}

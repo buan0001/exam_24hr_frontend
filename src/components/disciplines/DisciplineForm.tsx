@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Discipline } from "../../global_interfaces/participantInterface";
 import { getDisciplines, submitDiscipline } from "../../services/FetchHandler";
 
-const emptyDiscipline = {
+const defaultDiscipline = {
   name: "",
-  resultType: "",
+  resultType: "JUMP",
 };
 
 export default function DisciplineForm({
   setDisciplines,
-  formDiscipline = emptyDiscipline,
+  formDiscipline = defaultDiscipline,
   setFormDiscipline,
 }: {
   setDisciplines: (d: Discipline[]) => void;
@@ -21,21 +21,24 @@ export default function DisciplineForm({
   async function handleSubmit(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     console.log("posting discipline", formDiscipline);
-    if (!formDiscipline.name || formDiscipline.resultType || formDiscipline.name === "" || formDiscipline.resultType === "") return setErrorMessage("Please fill out all fields");
-    else {
+    if (!formDiscipline.name || !formDiscipline.resultType || formDiscipline.name === "" || formDiscipline.resultType === "") {
+        console.log("not allowed");
+        
+      return setErrorMessage("Please fill out all fields");
+    } else {
       const response = await submitDiscipline(formDiscipline);
-        console.log(response);
-        setErrorMessage("");
-        setFormDiscipline(emptyDiscipline);
-        setDisciplines(await getDisciplines());
+      console.log("new discipline", response);
+      setErrorMessage("");
+      setFormDiscipline(defaultDiscipline);
+      setDisciplines(await getDisciplines());
     }
   }
 
-    function handleDisciplineInputChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
-        const { name, value } = e.target;
-        console.log("name", name, "value", value);
-        setFormDiscipline({ ...formDiscipline, [name]: value });
-    }
+  function handleDisciplineInputChange(e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>) {
+    const { name, value } = e.target;
+    console.log("name", name, "value", value);
+    setFormDiscipline({ ...formDiscipline, [name]: value });
+  }
 
   return (
     <>
@@ -60,10 +63,10 @@ export default function DisciplineForm({
               </select>
             </label>
             <div>
-              <button style={{ width: "50%", backgroundColor: "background-color: rgba(255, 255, 128, .5);" }} onClick={handleSubmit}>
+              <button style={{ width: "50%", backgroundColor: "rgba(0, 255, 0, .5)" }} onClick={handleSubmit}>
                 Submit
               </button>
-              <button type="reset" onClick={() =>setFormDiscipline(emptyDiscipline)} style={{ width: "50%", backgroundColor: "olive" }}>
+              <button type="reset" onClick={() => setFormDiscipline(defaultDiscipline)} style={{ width: "50%", backgroundColor: "rgba(150, 100, 0, .5)" }}>
                 Reset
               </button>
             </div>

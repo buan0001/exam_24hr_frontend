@@ -27,13 +27,17 @@ export default function ParticipantPage() {
     async function get() {
       if (selectedParticipant.id && selectedParticipant.id > 0) {
         const response = await getParticipant(selectedParticipant.id);
-        setSelectedParticipant(response);
+        if (response.id) {
+          setSelectedParticipant(response);
+        }
+        else {
+          setSelectedParticipant(defaultParticipant);
+        }
       }
     }
     get();
   }, [participants]);
 
-  
   return (
     <>
       <div>

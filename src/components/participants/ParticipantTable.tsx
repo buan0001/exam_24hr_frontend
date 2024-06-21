@@ -251,12 +251,7 @@ export default function ParticipantTable({
               </td> */}
 
                 <td>
-                  <button
-                    style={{
-                      backgroundColor: "blue",
-                      fontWeight: "700",
-                      opacity: 0.5,
-                    }}
+                  <button className="details-button"
                     onClick={() => getDetailsClicked(participant.id)}
                   >
                     Details
@@ -264,14 +259,9 @@ export default function ParticipantTable({
                 </td>
                 <td>
                   <button
+                  className="edit-button"
                     onClick={() => {
                       handleUpdateClicked(participant);
-                    }}
-                    style={{
-                      backgroundColor: "cyan",
-                      color: "black",
-                      fontWeight: "700",
-                      opacity: 0.4,
                     }}
                   >
                     Update
@@ -279,11 +269,7 @@ export default function ParticipantTable({
                 </td>
                 <td>
                   <button
-                    style={{
-                      backgroundColor: "red",
-                      opacity: 0.7,
-                      fontWeight: "700",
-                    }}
+                  className="delete-button"
                     onClick={() => {
                       handleDelete(participant.id);
                     }}

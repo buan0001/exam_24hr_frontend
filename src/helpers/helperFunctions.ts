@@ -18,8 +18,8 @@ export function cleanResult(result: NewResult): number | false {
     }
     // console.log("s", s);
     
-    const whole = s[0];
-    let decimal = s[1];
+    const whole = s[0].slice(0, 2);
+    let decimal = s[1].slice(0, 3);
 
     if (Number(decimal) < 10) decimal = "0" + decimal;
     resultValue = Number(whole) * 100 + Number(decimal);
@@ -39,12 +39,12 @@ export function cleanResult(result: NewResult): number | false {
       if (Number(seconds) > 59 || Number(milliseconds) > 999) {
         return false;
       }
-      console.log("miliseconds length", milliseconds.length);
+      // console.log("miliseconds length", milliseconds.length);
       
       if (milliseconds.length < 3) {
         milliseconds = milliseconds.padEnd(3, "0");
       }
-      console.log("new miliseconds", milliseconds);
+      // console.log("new miliseconds", milliseconds);
       
       resultValue = Number(milliseconds) + Number(seconds) * 1000 + Number(minutes) * 60 * 1000;
     } else if (s.length == 2) {
@@ -86,7 +86,7 @@ export function convertMsToString(ms: number): string {
   const seconds = ((ms % 60000) / 1000).toFixed(0);
   const milliseconds = ms % 1000;
   const res = minutes > 0 ? `${minutes}.${seconds}.${milliseconds}` : `${seconds}.${milliseconds}`;
-  console.log(res);
+  // console.log(res);
   return res;
 
   // const minutes = (ms % 60000).toFixed(0);

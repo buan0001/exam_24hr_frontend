@@ -21,6 +21,8 @@ export default function ResultsPage() {
     fetchData();
   }, []);
 
+
+
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div>
