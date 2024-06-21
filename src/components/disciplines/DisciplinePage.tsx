@@ -5,7 +5,7 @@ import { getDisciplines } from "../../services/FetchHandler";
 import { Discipline } from "../../global_interfaces/participantInterface";
 
 export default function DisciplinePage() {
-  const [disciplines, setDisciplines] = useState([]);
+  const [disciplines, setDisciplines] = useState<Discipline[]>([]);
   const [formDiscipline, setFormDiscipline] = useState({} as Discipline);
 
   useEffect(() => {

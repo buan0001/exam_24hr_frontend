@@ -12,7 +12,7 @@ export default function DisciplineForm({
   formDiscipline = defaultDiscipline,
   setFormDiscipline,
 }: {
-  setDisciplines: (d: Discipline[]) => void;
+  setDisciplines: (discipline: Discipline[]) => void;
   formDiscipline: Discipline;
   setFormDiscipline: (d: Discipline) => void;
 }) {
