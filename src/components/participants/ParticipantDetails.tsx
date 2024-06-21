@@ -1,5 +1,6 @@
 import { DetailedParticipant, Participant } from "../../global_interfaces/participantInterface";
 import { defaultParticipant } from "../../global_interfaces/emptyInstancedInterfaces";
+import { convertResultToReadable } from "../../helpers/helperFunctions";
 
 export default function ParticipantDetails({ selectedParticipant, setSelectedParticipant }: { selectedParticipant: DetailedParticipant; setSelectedParticipant: (participant: Participant) => void }) {
   function generateResults() {
@@ -25,7 +26,7 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
             {selectedParticipant.results.map((result) => (
               <tr key={result.id}>
                 <td>{result.date}</td>
-                <td>{result.result}</td>
+                <td>{convertResultToReadable(result)}</td>
                 <td>{result.discipline.name}</td>
               </tr>
             ))}

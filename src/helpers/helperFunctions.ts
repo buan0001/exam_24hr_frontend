@@ -1,4 +1,4 @@
-import { NewResult } from "../global_interfaces/participantInterface";
+import { NewResult, Result } from "../global_interfaces/participantInterface";
 
 export function capitalizeFirstLetter(string: string |undefined) {
   if (!string) return "";
@@ -63,7 +63,7 @@ export function cleanResult(result: NewResult): number | false {
   return resultValue;
 }
 
-export function convertResultToReadable(result: NewResult): string {
+export function convertResultToReadable(result: NewResult | Result): string {
   if (typeof result.resultValue == "string") {
     return result.resultValue;
   }
