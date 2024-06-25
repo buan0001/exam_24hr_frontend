@@ -41,7 +41,7 @@ export default function ParticipantForm({
   }
 
   function disciplineChanged(e: React.ChangeEvent<HTMLSelectElement>) {
-    console.log("target value", e.target.value);
+    console.log("target value", e.target.value);  
     const [disciplineName, disciplineId] = e.target.value.split("-");
     if (formParticipant.disciplines.find((discipline) => Number(discipline.id) === Number(disciplineId))) {
       setFormParticipant({

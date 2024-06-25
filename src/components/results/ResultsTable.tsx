@@ -111,7 +111,7 @@ export default function ResultsTable({
         </select>
       </h3>
       <table>
-        <thead>
+        <thead >
           <tr>
             <th>Date</th>
             <th>Result</th>
@@ -125,9 +125,10 @@ export default function ResultsTable({
         </thead>
         <tbody>
           {sortedAndFilteredResults().map((result) => (
-            <tr key={result.id}>
+            <tr key={result.id} >
               <td>{result.date}</td>
-              <td>{convertResultToReadable(result)}</td>
+              <td>{result.result}</td>
+              {/* <td>{convertResultToReadable(result)}</td> */}
               <td>{result.discipline.name}</td>
               <td>{result.participant.name}</td>
               <td>{result.participant.ageGroup}</td>
