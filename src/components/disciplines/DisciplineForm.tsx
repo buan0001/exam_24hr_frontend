@@ -4,7 +4,7 @@ import { getDisciplines, submitDiscipline } from "../../services/FetchHandler";
 
 const defaultDiscipline = {
   name: "",
-  resultType: "JUMP",
+  resultType: "",
 };
 
 export default function DisciplineForm({
@@ -45,7 +45,7 @@ export default function DisciplineForm({
       <div>
         <div>
           <h1>Discipline Form</h1>
-          {errorMessage && <p>{errorMessage}</p>}
+          {errorMessage && <p style={{color:"red"}}>{errorMessage}</p>}
         </div>
         <div>
           <form style={{ display: "flex", flexDirection: "column", alignContent: "center", alignItems: "center", gap: "1em" }}>
@@ -56,6 +56,7 @@ export default function DisciplineForm({
             <label>
               Result type
               <select name="resultType" value={formDiscipline.resultType} onChange={handleDisciplineInputChange}>
+                <option value="">Select a discipline type</option>
                 <option value="TIME">Time</option>
                 <option value="JUMP">Jump</option>
                 <option value="THROW">Throw</option>

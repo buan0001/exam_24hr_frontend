@@ -52,7 +52,10 @@ export default function ResultsTable({
       return true;
     });
     const sortedResults = filteredResults.sort((a, b) => {
+      if(a.resultType === "TIME" && b.resultType === "TIME") {
       return a.resultValue - b.resultValue;
+      }
+      else return b.resultValue - a.resultValue
     });
     // console.log("filtered and sorted results", sortedResults);
 
@@ -64,7 +67,7 @@ export default function ResultsTable({
     // console.log("name", name, "value", value);
     setFilter({ ...filter, [name]: value });
     // console.log("filter", filter);
-    sortedAndFilteredResults();
+    // sortedAndFilteredResults();
   }
 
   async function handleDeleteClicked(id: number) {
@@ -134,7 +137,7 @@ export default function ResultsTable({
               <td>{result.participant.ageGroup}</td>
               <td>{capitalizeFirstLetter(result.participant.gender)}</td>
               <td>
-                <button className="edit-button" onClick={() => handleFormClicked(result)}>Edit result</button>
+                <button className="edit-button" disabled={creatingMultiple} onClick={() => handleFormClicked(result)}>Edit result</button>
               </td>
               <td>
                 <button className="delete-button" onClick={() => handleDeleteClicked(result.id)}>Delete result</button>

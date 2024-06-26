@@ -1,6 +1,6 @@
 import { NewResult, Result } from "../global_interfaces/participantInterface";
 
-export function capitalizeFirstLetter(string: string |undefined) {
+export function capitalizeFirstLetter(string: string | undefined) {
   if (!string) return "";
   return string.charAt(0).toUpperCase() + string.slice(1).toLocaleLowerCase();
 }
@@ -12,51 +12,52 @@ export function cleanResult(result: NewResult): number | false {
   const rt = result.discipline.resultType;
   let resultValue = 0;
   if (rt == "THROW" || rt == "JUMP" || rt == "POINTS") {
-    const s = result.resultValue.split(",")
+    const s = result.resultValue.split(",");
     if (s.length !== 2) {
       return false;
     }
     // console.log("s", s);
-    
+
     const whole = s[0].slice(0, 2);
     let decimal = s[1].slice(0, 2);
 
     console.log("whole", whole, "decimal", decimal);
-    
 
-    if (Number(decimal) < 10) decimal = "0" + decimal;
+    if (Number(decimal) < 10) decimal = decimal + "0";
     resultValue = Number(whole) * 100 + Number(decimal);
-    
-    
   }
   if (rt == "TIME") {
     const s = result.resultValue.split(".");
-    // if (s.length !== 3){
-    //   return false
-    // }
     if (s.length == 3) {
-      const minutes =  s[0].slice(0, 2);
+      const minutes = s[0].slice(0, 2);
       const seconds = s[1].slice(0, 2);
-      let milliseconds= s[2].slice(0, 3);
-      // const [minutes, seconds, milliseconds] = s;
-      if (Number(seconds) > 59 || Number(milliseconds) > 999) {
+      let milliseconds = s[2].slice(0, 3);
+
+      if (Number(seconds) > 59) {
         return false;
       }
-      // console.log("miliseconds length", milliseconds.length);
-      
+
       if (milliseconds.length < 3) {
         milliseconds = milliseconds.padEnd(3, "0");
       }
-      // console.log("new miliseconds", milliseconds);
-      
+
+      console.log("milisecods", milliseconds);
+
       resultValue = Number(milliseconds) + Number(seconds) * 1000 + Number(minutes) * 60 * 1000;
     } else if (s.length == 2) {
-      s[0] = s[0].slice(0, 2);
-      s[1] = s[1].slice(0, 3);
-      const [seconds, milliseconds] = s;
-      if (Number(seconds) > 59 || Number(milliseconds) > 999) {
+      const seconds = s[0].slice(0, 2);
+      // let milliseconds = s[1];
+      let milliseconds = s[1].slice(0, 3);
+
+      if (Number(seconds) > 59) {
         return false;
       }
+      if (milliseconds.length < 3) {
+        milliseconds = milliseconds.padEnd(3, "0");
+      }
+
+      console.log("milisecods", milliseconds);
+
       resultValue = Number(milliseconds) + Number(seconds) * 1000;
     }
   }
@@ -79,7 +80,8 @@ function convertDistanceToMeters(distance: number): string {
   const whole = Math.floor(distance / 100);
   const decimal = distance % 100;
   let paddedDecimal;
-  if (decimal < 10) paddedDecimal = "0" + decimal;
+  if (decimal < 10) paddedDecimal = decimal + "0";
+  // if (decimal < 10) paddedDecimal = "0" + decimal;
 
   return `${whole},${paddedDecimal || decimal}`;
 }

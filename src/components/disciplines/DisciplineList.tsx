@@ -14,7 +14,7 @@ export default function DisciplineList({ disciplines, setFormDiscipline }: { dis
           <ul>
             {disciplines.map((discipline: Discipline) => (
               <li key={discipline.name}>
-                {discipline.name} ( {capitalizeFirstLetter(discipline.resultType)}) <button onClick={() => setFormDiscipline(discipline)}>Edit</button>
+                {discipline.name} ({capitalizeFirstLetter(discipline.resultType)}) <button onClick={() => setFormDiscipline(discipline)}>Edit</button>
               </li>
             ))}
           </ul>

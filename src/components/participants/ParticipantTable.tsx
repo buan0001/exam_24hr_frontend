@@ -4,10 +4,10 @@ import { Discipline, Participant } from "../../global_interfaces/participantInte
 import { capitalizeFirstLetter } from "../../helpers/helperFunctions";
 
 type FilterValues = {
-  filterClub: string;
-  filterGender: string;
-  filterDiscipline: string;
-  filterAgeGroup: string;
+  club: string;
+  gender: string;
+  disciplines: string;
+  ageGroup: string;
 
   [key: string]: string;
 };
@@ -98,7 +98,7 @@ export default function ParticipantTable({
           for (const discipline of participant.disciplines) {
             // console.log("discipline", discipline.name);
 
-            if (discipline.name.toLocaleLowerCase() === filterValues[key].toLocaleLowerCase()) {
+            if (discipline.name.toLocaleLowerCase() === filterValues.disciplines.toLocaleLowerCase()) {
               bool2 = true;
             }
           }
