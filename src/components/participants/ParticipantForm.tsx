@@ -80,7 +80,7 @@ export default function ParticipantForm({
     <>
       <h1>Participant Form</h1>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-        {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p style={{color:"red"}}>{errorMessage}</p>}
         <form
           onSubmit={(e) => handleSubmit(e)}
           style={{
