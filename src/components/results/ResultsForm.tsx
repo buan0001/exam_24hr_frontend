@@ -174,15 +174,15 @@ export default function ResultsForm({
       </div>
       <div>
         <h2>Results form</h2>
-
         {error && <div>{error}</div>}
         <form style={{ display: "flex", flexDirection: "column", gap: "1vw", padding: "1vw", margin: "1vw" }}>
           <label>
             Discipline
-            <select name="discipline" onChange={handleFormInputChange} disabled={creatingMultiple}>
+            <select name="discipline" onChange={handleFormInputChange} value={formResult.discipline.name + "-" + formResult.discipline.resultType + "-" + formResult.discipline.id} disabled={creatingMultiple}>
               <option value="">Select discipline</option>
               {disciplines.map((discipline) => (
-                <option key={discipline.name} selected={discipline.name === formResult.discipline.name} value={discipline.name + "-" + discipline.resultType + "-" + discipline.id}>
+                <option key={discipline.name} value={discipline.name + "-" + discipline.resultType + "-" + discipline.id}>
+          
                   {discipline.name}
                 </option>
               ))}

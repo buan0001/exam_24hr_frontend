@@ -1,6 +1,6 @@
 import { DetailedParticipant, Participant } from "../../global_interfaces/participantInterface";
 import { defaultParticipant } from "../../global_interfaces/emptyInstancedInterfaces";
-import { convertResultToReadable } from "../../helpers/helperFunctions";
+
 
 export default function ParticipantDetails({ selectedParticipant, setSelectedParticipant }: { selectedParticipant: DetailedParticipant; setSelectedParticipant: (participant: Participant) => void }) {
   function generateResults() {
@@ -26,7 +26,8 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
             {selectedParticipant.results.map((result) => (
               <tr key={result.id}>
                 <td>{result.date}</td>
-                <td>{convertResultToReadable(result)}</td>
+                <td>{result.result}</td>
+                {/* <td>{convertResultToReadable(result)}</td> */}
                 <td>{result.discipline.name}</td>
               </tr>
             ))}
@@ -41,8 +42,9 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
     return (
       <>
         <h3>
-          {selectedParticipant.name} is {selectedParticipant.age} years old. Part of {selectedParticipant.club}
+          {selectedParticipant.name} is {selectedParticipant.age} years old & member of {selectedParticipant.club}
         </h3>
+          <button className="details-button" onClick={() => setSelectedParticipant(defaultParticipant)}>Close</button>
 
         <h2>Disciplines:</h2>
         <ul>
@@ -53,7 +55,6 @@ export default function ParticipantDetails({ selectedParticipant, setSelectedPar
         <h2>Results</h2>
         {generateResults()}
 
-        <button className="details-button" onClick={() => setSelectedParticipant(defaultParticipant)}>Close</button>
       </>
     );
   }
